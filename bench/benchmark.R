@@ -252,8 +252,8 @@ append_csv(summ,   file.path(OUT_DIR, "bench_summary.csv"))
 cat("\n---- Summary ----\n")
 print(summ[, c("scenario", "rep", "total_secs", "peak_rss_mb", "n_points",
                "min_pair_dist_m", "constraints_ok", "min_points_in_bin")], row.names = FALSE)
-cat("\n---- Seconds per stage ----\n")
-wide <- stats::reshape(stats::aggregate(secs ~ scenario + stage, stages, mean),
+cat("\n---- Seconds per stage (median of reps) ----\n")
+wide <- stats::reshape(stats::aggregate(secs ~ scenario + stage, stages, median),
                        idvar = "stage", timevar = "scenario", direction = "wide")
 names(wide) <- sub("^secs\\.", "", names(wide))
 wide[, -1] <- round(wide[, -1], 2)
