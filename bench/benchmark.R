@@ -6,24 +6,29 @@
 # and timings are not polluted by earlier runs.
 #
 # It loads the package from your local git clone with pkgload::load_all(), so
-# whatever is checked out (main = Hans's original, dev = your changes) is what
+# whatever is checked out (main = Hans's original, dev = my changes) is what
 # gets benchmarked. Each row in the results CSV records the git branch + commit.
 #
+# Lives in the repo at bench/benchmark.R. Test data and the elevation map stay
+# OUTSIDE the repo (in ROOT) and are never committed.
+#
 # Usage (RStudio): set ROOT below, then Source the file (Ctrl+Shift+S).
-# Results:  bench/results/bench_results.csv   (one row per stage per run)
-#           bench/results/points_<scenario>_<commit>.rds  (output points)
+# Results (git-ignored): bench/results/bench_summary.csv  (one row per run)
+#                        bench/results/bench_stages.csv   (one row per stage)
+#                        bench/results/points_<scenario>_<commit>_rep<k>.rds
 ################################################################################
 
 ## ---- Settings ---------------------------------------------------------------
 ROOT <- Sys.getenv("ECOSAMP_ROOT",
                    "C:/Computer/Imperial/Year 2/Work/UROP/EcoSamp")
-PKG_DIR  <- file.path(ROOT, "EcoSamp-Sample-designer", "ecosamp")  # git clone
-DATA_DIR <- file.path(ROOT, "TestData_VdC")
-ELEV_TIF <- file.path(ROOT, "BRA_alt", "elevation", "BRA_elv_msk.tif")
-OUT_DIR  <- file.path(ROOT, "bench", "results")
+REPO     <- file.path(ROOT, "EcoSamp-Sample-designer")      # git clone
+PKG_DIR  <- file.path(REPO, "ecosamp")
+DATA_DIR <- file.path(ROOT, "TestData_VdC")                   # not in repo
+ELEV_TIF <- file.path(ROOT, "BRA_alt", "elevation", "BRA_elv_msk.tif")  # not in repo
+OUT_DIR  <- file.path(REPO, "bench", "results")               # git-ignored
 
 SEED <- 1
-REPS <- 1           # repeats per scenario (raise to 3 for final numbers)
+REPS <- 3           # repeats per scenario (raise to 3 for final numbers)
 PROFILE <- FALSE    # TRUE = also write an Rprof hotspot summary per scenario
 
 # Hans's trial-script parameters (with max_distance -> max_distance_sampling fixed)
